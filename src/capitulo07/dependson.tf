@@ -14,7 +14,7 @@ resource "google_compute_instance" "vma" {
   }
 
   network_interface {
-    network = "default"
+    network = google_compute_network.vpc0.self_link
     access_config {
     }
   }
@@ -37,7 +37,7 @@ resource "google_compute_instance" "vmb" {
   }
 
   network_interface {
-    network = "default"
+    network = google_compute_network.vpc0.self_link
     access_config {
     }
   }
