@@ -1,6 +1,10 @@
 module "gcp-network" {
-  source       = "terraform-google-modules/network/google"
-  version      = "2.0.1"
+  # Pegando o modulo do git e especificando a versao na url
+  source = "git::https://github.com/terraform-google-modules/terraform-google-network?ref=v2.0.1"
+  # Pegando o modulo do terraform registry e especificando a versao no parametro source
+  #source       = "terraform-google-modules/network/google"
+  #version      = "2.0.1"
+
 
   # input do modulo
   network_name = "aula5"
