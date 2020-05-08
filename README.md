@@ -3,6 +3,6 @@ Repositório para utilização em aula
 
 ## Recursos extras
 
-[Repositorio Terraforming](https://github.com/bryanasdev000/terraforminghttps://github.com/bryanasdev000/terraforming) - Topicos interessantes sobre o Terraform e seu ecossistema.
+[Repositorio Terraforming](https://github.com/bryanasdev000/terraforminghttps://github.com/bryanasdev000/terraforming) - (Em desenvolvimento) Topicos interessantes sobre o Terraform e seu ecossistema.
 
-[Repositorio Terraform Pipelines](https://github.com/bryanasdev000/terraform-pipelines) - Pipelines de exemplo utilizando o Terraform.
+[Repositorio Terraform Pipelines](https://github.com/bryanasdev000/terraform-pipelines) - (Em desenvolvimento) Pipelines de exemplo utilizando o Terraform.
