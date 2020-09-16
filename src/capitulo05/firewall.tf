@@ -1,10 +1,10 @@
 resource "google_compute_firewall" "fw-rule" {
-  name    = "fw-rule-8080"
-  network = "default"
+  name    = "fw-rule-22"
+  network = "vpc0"
 
   allow {
     protocol = "tcp"
-    ports    = ["8080"]
+    ports    = ["22"]
   }
 
   source_ranges = ["0.0.0.0/0"]

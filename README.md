@@ -1,5 +1,5 @@
 # Terraform-531
-Repositório para utilização em aula
+Repositório para utilização em aula para a turma **7513**
 
 ## Recursos extras
 
