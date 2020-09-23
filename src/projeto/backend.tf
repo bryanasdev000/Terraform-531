@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket = "terrastates"
+    bucket = "terrastates-curso"
     prefix = "terraform/state"
   }
 }

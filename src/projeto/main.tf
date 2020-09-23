@@ -6,9 +6,9 @@
 # Rede (VPC + Subnet)
 module "vpc" {
   source  = "terraform-google-modules/network/google"
-  version = "2.3"
+  version = "2.5.0"
 
-  project_id   = "seu-project-id"
+  project_id   = "id-projeto"
   network_name = "ha-final"
   routing_mode = "GLOBAL"
 
@@ -32,7 +32,7 @@ resource "google_compute_firewall" "fw-dev" {
   network = module.vpc.network_self_link
   allow {
     protocol = "tcp"
-    ports    = ["22", "80", "443"]
+    ports    = ["22"]
   }
   source_ranges = ["0.0.0.0/0"]
 }
@@ -112,3 +112,12 @@ module "mod-lb" {
     module.mig-asia.instance_group
   ]
 }
+
+#output "lbipfull" {
+#  value = module.mod-lb.ip
+#}
+
+output "fwdfull" {
+  value = module.mod-lb.fwd
+}
+
