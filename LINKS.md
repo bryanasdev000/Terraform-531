@@ -19,3 +19,14 @@ https://docs.oracle.com/en/solutions/infrastructure-components-siebel/ebs-config
 https://www.jlcp.com.br/como-instalar-o-terraform-no-windows/
 https://cloud.google.com/dns/docs/policies
 https://cloud.google.com/dns/docs/policies#before_you_begin
+
+## Aula 2
+
+https://git-scm.com/download/win
+https://github.com/
+https://console.cloud.google.com/apis/credentials/serviceaccountkey
+https://registry.terraform.io/providers/hashicorp/google/latest
+https://www.hashicorp.com/resources/a-practitioner-s-guide-to-using-hashicorp-terraform-cloud-with-github
+https://tfswitch.warrensbox.com/
+https://nixos.org/
+http://dontpad.com/terraform-4linux-7752/
