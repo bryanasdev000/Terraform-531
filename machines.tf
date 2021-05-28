@@ -1,5 +1,5 @@
-resource "google_compute_instance" "database" {
-  name         = "database"
+resource "google_compute_instance" "teste" {
+  name         = format("%s-%s", "teste", terraform.workspace)
   machine_type = "e2-medium"
   zone         = "southamerica-east1-a"
 
@@ -10,20 +10,21 @@ resource "google_compute_instance" "database" {
   }
 
   network_interface {
-    network = google_compute_network.vpc_network.self_link
+    network = "default"
 
     access_config {
       // Ephemeral IP
     }
   }
 
-  lifecycle {
-    ignore_changes = [attached_disk]
+  metadata = {
+    ssh-keys = format("%s:%s", "root", file("chave.pub"))
   }
 }
 
-resource "google_compute_instance" "web" {
-  name         = "web"
+
+resource "google_compute_instance" "shell" {
+  name         = format("%s-%s", "shell", terraform.workspace)
   machine_type = "e2-medium"
   zone         = "southamerica-east1-a"
 
@@ -34,39 +35,30 @@ resource "google_compute_instance" "web" {
   }
 
   network_interface {
-    network = google_compute_network.vpc_network.self_link
+    network = "default"
 
     access_config {
       // Ephemeral IP
     }
   }
 
-  depends_on = [
-     google_compute_instance.database,
-  ]
+  metadata = {
+    ssh-keys = format("%s:%s", "root", file("chave.pub"))
+  }
+
+  #provisioner "file" {
+  #  source = "./chave"
+  #  destination = "/tmp/secret"
+  #  connection {
+  #  type     = "ssh"
+  #  user     = "root"
+  #  host     = self.network_interface.0.access_config.0.nat_ip
+  #}
+
+  #}
 
 }
 
-resource "google_compute_network" "vpc_network" {
-  name = "batatinhas-vpc"
-  auto_create_subnetworks = true
-}
 
 
-resource "google_compute_subnetwork" "test_subnetwork" {
-  name          = "test-subnetwork"
-  ip_cidr_range = "10.2.0.0/16"
-  region        = "southamerica-east1"
-  network       = google_compute_network.vpc_network.self_link
-}
 
-resource "google_compute_disk" "default" {
-  name  = "database-db"
-  type  = "pd-standard"
-  zone  = google_compute_instance.database.zone
-}
-
-resource "google_compute_attached_disk" "default" {
-  disk     = google_compute_disk.default.id
-  instance = google_compute_instance.database.id
-}
