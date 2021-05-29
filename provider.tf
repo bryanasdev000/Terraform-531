@@ -1,64 +1,20 @@
-resource "google_compute_instance" "teste" {
-  name         = format("%s-%s", "teste", terraform.workspace)
-  machine_type = "e2-medium"
-  zone         = "southamerica-east1-a"
-
-  boot_disk {
-    initialize_params {
-      image = "debian-cloud/debian-10"
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "3.69.0"
     }
   }
-
-  network_interface {
-    network = "default"
-
-    access_config {
-      // Ephemeral IP
-    }
-  }
-
-  metadata = {
-    ssh-keys = format("%s:%s", "root", file("chave.pub"))
+  backend "gcs" {
+    bucket  = "4linuxstateterraform"
+    prefix  = "terraform/state"
   }
 }
 
-
-resource "google_compute_instance" "shell" {
-  name         = format("%s-%s", "shell", terraform.workspace)
-  machine_type = "e2-medium"
-  zone         = "southamerica-east1-a"
-
-  boot_disk {
-    initialize_params {
-      image = "debian-cloud/debian-10"
-    }
-  }
-
-  network_interface {
-    network = "default"
-
-    access_config {
-      // Ephemeral IP
-    }
-  }
-
-  metadata = {
-    ssh-keys = format("%s:%s", "root", file("chave.pub"))
-  }
-
-  #provisioner "file" {
-  #  source = "./chave"
-  #  destination = "/tmp/secret"
-  #  connection {
-  #  type     = "ssh"
-  #  user     = "root"
-  #  host     = self.network_interface.0.access_config.0.nat_ip
-  #}
-
-  #}
-
+provider "google" {
+  # Configuration options
 }
 
-
-
-
+#provider "http" {
+#  # Configuration options
+#}

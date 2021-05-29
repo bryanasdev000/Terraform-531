@@ -62,4 +62,36 @@ https://www.terraform.io/docs/language/resources/provisioners/syntax.html
 
 https://github.com/GoogleCloudPlatform/terraformer
 
+## Aula 4
 
+https://weekly.tf/
+
+https://www.hashicorp.com/events/webinars/recorded?type=all
+
+https://www.hashicorp.com/events?type=all
+
+https://www.hashicorp.com/blog/videos-from-hashiconf-2019-keynotes-and-breakout-sessions
+
+https://www.hashicorp.com/blog/hashitalks-2020-recorded-sessions-now-live
+
+https://github.com/asdf-vm/asdf
+
+https://t.me/joinchat/a2EHkKc_aP82YzQx
+
+https://www.terraform.io/docs/language/resources/provisioners/syntax.html
+
+https://www.terraform.io/docs/language/resources/provisioners/connection.html
+
+https://www.terraform.io/docs/language/resources/provisioners/local-exec.html
+
+https://www.terraform.io/docs/language/resources/provisioners/remote-exec.html
+
+https://www.terraform.io/docs/language/resources/provisioners/null_resource.html
+
+https://github.com/bridgecrewio/checkov
+
+https://github.com/tfsec/tfsec
+
+https://github.com/shuaibiyy/awesome-terraform
+
+https://vimeo.com/520205493
