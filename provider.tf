@@ -12,9 +12,6 @@ terraform {
 }
 
 provider "google" {
-  # Configuration options
 }
 
-#provider "http" {
-#  # Configuration options
-#}
+
