@@ -1,0 +1,161 @@
+# Por favor, não recortar o texto!
+
+# Criar chave na GCP link:
+https://console.cloud.google.com/apis/credentials/serviceaccountkey
+# Página 39
+
+# Exportar as várs de ambiente
+
+export GOOGLE_APPLICATION_CREDENTIALS= 
+# path do json chave
+
+export GOOGLE_PROJECT=
+# id do projeto
+
+
+## Refs
+
+https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/provider_reference
+https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/getting_started
+
+
+## ARQUIVO terraform.tf dentro da pasta curso/step1 (preferencia de vocês)
+
+terraform {
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+      version = "3.79.0"
+    }
+  }
+}
+
+provider "google" {
+  # Configuration options
+}
+
+## ARQUIVO vm.tf 
+
+resource "google_compute_instance" "web" {
+  name         = "web"
+  machine_type = "e2-medium"
+  zone         = "us-central1-a"
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-10"
+    }
+  }
+
+  network_interface {
+    network = google_compute_network.vpc_network.name
+    access_config {
+    }
+  }
+
+  depends_on = [google_compute_instance.database]
+
+}
+
+## ARQUIVO vm2.tf
+
+resource "google_compute_instance" "default2" {
+  name         = "test2"
+  machine_type = "e2-medium"
+  zone         = "us-central1-a"
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-10"
+    }
+  }
+
+  network_interface {
+    network = google_compute_network.vpc_network.name
+    access_config {
+    }
+  }
+
+}
+
+## ARQUIVO vpc.tf
+
+resource "google_compute_network" "vpc_network" {
+    name = "batatas"
+}
+
+## Refs
+
+https://www.terraform.io/docs/cli/commands/init.html
+https://www.terraform.io/docs/cli/commands/apply.html
+https://www.terraform.io/docs/cli/commands/destroy.html
+
+
+## Problemas de export no windows
+
+provider "google" {
+  project     = "project-id"
+  credentials = file("/path/para/arquivo")
+}
+
+## HCL REF
+
+https://www.terraform.io/docs/language/syntax/configuration.html
+
+
+## Bucket (step-state)
+
+resource "google_storage_bucket" "backend" {
+  name          = "backendgcs"
+  location      = "US"
+  force_destroy = false
+
+  versioning {
+    enabled = true
+  }
+
+}
+
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "3.79.0"
+    }
+  }
+}
+
+provider "google" {
+  # Configuration options
+}
+init
+## Voltar a pasta do seu códgio (vm e etc)
+## Adicionar o trecho de backend
+ backend "gcs" {
+    bucket = "backendgcs"
+    prefix = "terraform/prod"
+  }
+# mudando o bucket para o nome correto
+
+# Ficando assim no final (step1)
+
+terraform {
+  backend "gcs" {
+    bucket = "backendgcs"
+    prefix = "terraform/prod"
+    credentials = file("/path/para/arquivo")
+  }
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "3.79.0"
+    }
+  }
+}
+
+provider "google" {
+  # Configuration options
+}
+
+# https://www.terraform.io/docs/language/settings/backends/gcs.html
+
