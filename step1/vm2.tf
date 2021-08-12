@@ -1,5 +1,5 @@
 resource "google_compute_instance" "database" {
-  name         = "database"
+  name         = format("%s-%s",terraform.workspace, "database")
   machine_type = "e2-medium"
   zone         = "us-central1-a"
 

@@ -1,0 +1,11 @@
+# Exercicio aula
+## Criar uma nova pasta
+## Copiem somente o `terraform.tf`
+## Executem `terraform init`
+- Criar 1 VPC (subnet automatica)
+- Criar 1 VM nessa subnet
+- Criar 1 disco
+- Criar um bucket (step1-ex-state) com terraform.tf e bucket.tf
+- Editar terraform.tf junto ao código da vm, vpc e afins e fazer ele utilizar esse backend (terraform init)
+- terraform workspace dev
+- Editar recursos para não dar erro ao trocar de workspaces (exemplo: adicionar format)

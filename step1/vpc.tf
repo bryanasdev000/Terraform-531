@@ -1,5 +1,5 @@
 resource "google_compute_network" "vpc_network" {
-  name = "batatas"
+  name = format("%s-%s",terraform.workspace,"batatas")
 }
 
 # tipodorecurso.nomedoterraform
