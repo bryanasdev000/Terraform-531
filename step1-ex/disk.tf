@@ -1,11 +1,13 @@
-resource "google_compute_disk" "disco" {
-  name  = format("%s-%s", terraform.workspace, "web-disco")
-  type  = "pd-ssd"
-  zone  = google_compute_instance.vm.zone
-  size  = 10
-}
-
-resource "google_compute_attached_disk" "anexo" {
-  disk     = google_compute_disk.disco.id
-  instance = google_compute_instance.vm.id
-}
+#resource "google_compute_disk" "disco" {
+#  name  = var.disk_name
+#  type  = var.disk_type
+#  zone  = google_compute_instance.vm.zone
+#  size  = var.disk_size
+#}
+#
+#resource "google_compute_attached_disk" "anexo" {
+#  disk     = google_compute_disk.disco.id
+#  instance = google_compute_instance.vm.id
+#}
+#
+#

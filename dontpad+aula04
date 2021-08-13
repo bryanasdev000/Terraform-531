@@ -1,0 +1,384 @@
+cd..# Por favor, não recortar o texto!
+
+# Criar chave na GCP link:
+https://console.cloud.google.com/apis/credentials/serviceaccountkey
+# Página 39
+
+# Exportar as várs de ambiente
+
+export GOOGLE_APPLICATION_CREDENTIALS= 
+# path do json chave
+
+export GOOGLE_PROJECT=
+# id do projeto
+
+
+## Refs
+
+https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/provider_reference
+https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/getting_started
+
+
+## ARQUIVO terraform.tf dentro da pasta curso/step1 (preferencia de vocês)
+
+terraform {
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+      version = "3.79.0"
+    }
+  }
+}
+
+provider "google" {
+  # Configuration options
+}
+
+## ARQUIVO vm.tf 
+
+resource "google_compute_instance" "web" {
+  name         = "web"
+  machine_type = "e2-medium"
+  zone         = "us-central1-a"
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-10"
+    }
+  }
+
+  network_interface {
+    network = google_compute_network.vpc_network.name
+    access_config {
+    }
+  }
+
+  depends_on = [google_compute_instance.database]
+
+}
+
+## ARQUIVO vm2.tf
+
+resource "google_compute_instance" "default2" {
+  name         = "test2"
+  machine_type = "e2-medium"
+  zone         = "us-central1-a"
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-10"
+    }
+  }
+
+  network_interface {
+    network = google_compute_network.vpc_network.name
+    access_config {
+    }
+  }
+
+}
+
+## ARQUIVO vpc.tf
+
+resource "google_compute_network" "vpc_network" {
+    name = "batatas"
+}
+
+## Refs
+
+https://www.terraform.io/docs/cli/commands/init.html
+https://www.terraform.io/docs/cli/commands/apply.html
+https://www.terraform.io/docs/cli/commands/destroy.html
+
+
+## Problemas de export no windows
+
+provider "google" {
+  project     = "project-id"
+  credentials = file("/path/para/arquivo")
+}
+
+## HCL REF
+
+https://www.terraform.io/docs/language/syntax/configuration.html
+
+
+## Bucket (step-state)
+
+resource "google_storage_bucket" "backend" {
+  name          = "backendgcs"
+  location      = "US"
+  force_destroy = false
+
+  versioning {
+    enabled = true
+  }
+
+}
+
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "3.79.0"
+    }
+  }
+}
+
+provider "google" {
+  # Configuration options
+}
+init
+## Voltar a pasta do seu códgio (vm e etc)
+## Adicionar o trecho de backend
+ backend "gcs" {
+    bucket = "backendgcs"
+    prefix = "terraform/prod"
+  }
+# mudando o bucket para o nome correto
+
+# Ficando assim no final (step1)
+
+terraform {
+  backend "gcs" {
+    bucket = "backendgcs"
+    prefix = "terraform/prod"
+    credentials = file("/path/para/arquivo")
+  }
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "3.79.0"
+    }
+  }
+}
+
+provider "google" {
+  # Configuration options
+}
+
+# https://www.terraform.io/docs/language/settings/backends/gcs.html
+
+#####################################################################
+
+11-08-2021
+
+#####################################################################
+
+
+Exercicio
+
+# Exercicio aula                                                          
+## Criar uma nova pasta                                                                                   
+## Copiem somente o `terraform.tf`                                                                        
+## Executem `terraform init`                                                                              
+- Criar 1 VPC (subnet automatica)                                                                         
+- Criar 1 VM nessa subnet                                                                                 
+- Criar 1 disco
+
+
+resource "google_compute_disk" "disco" {
+  name  = "web-disco"
+  type  = "pd-ssd"
+  zone  = google_compute_instance.vm.zone
+  size  = 10
+}
+
+resource "google_compute_attached_disk" "anexo" {
+  disk     = google_compute_disk.disco.id
+  instance = google_compute_instance.vm.id
+}
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "3.79.0"
+    }
+  }
+}
+
+provider "google" {
+}
+resource "google_compute_instance" "vm" {
+  name         = "web"
+  machine_type = "e2-small"
+  zone         = "us-central1-a"
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-10"
+    }
+  }
+
+  network_interface {
+    network = google_compute_network.rede.name
+
+    access_config {
+      // Ephemeral IP
+    }
+  }
+
+}
+resource "google_compute_network" "rede" {
+  name = "rede-alfa"
+}
+
+
+
+#### Ex continuação
+
+# Exercicio aula
+## Criar uma nova pasta
+## Copiem somente o `terraform.tf`
+## Executem `terraform init`
+- Criar 1 VPC (subnet automatica)
+- Criar 1 VM nessa subnet
+- Criar 1 disco
+- Criar um bucket (step1-ex-state) com terraform.tf e bucket.tf
+- Editar terraform.tf junto ao código da vm, vpc e afins e fazer ele utilizar esse backend (terraform init)
+- terraform workspace new dev
+- Editar recursos para não dar erro ao trocar de workspaces (exemplo: adicionar format)
+
+
+
+
+
+## EX modulo database
+
+- Criar modulo de vm + disco                                                                                                                                                                                         
+   - Modulo database                                                                                                                                                                                                
+   - contem 1 vm, 1 disco e 1 anexo                                                                                                                                                                                 
+   - output do IP da VM                                                                                                                                                                                             
+   - variables base (nome, tipo, etc)    
+
+
+
+# Modulo raiz
+
+module "db" {
+  source = "./database"
+  vm_name = "redzone-db"
+  vm_type = "e2-medium"
+  vm_zone = "southamerica-east1-a"
+  vm_net  = "default"
+  disk_size = 30
+  disk_name = "redzone-db-external-disk"
+}
+
+output "db-ip-externo" {
+  value = module.db.ip_externo_vm
+}
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "3.79.0"
+    }
+  }
+}
+
+provider "google" {
+}
+
+# Modulo database
+
+# VM
+# Disco
+# Anexar esse disco na minha VM
+
+resource "google_compute_instance" "default" {
+  name         = var.vm_name
+  machine_type = var.vm_type
+  zone         = var.vm_zone
+
+  boot_disk {
+    initialize_params {
+      image = var.vm_os
+    }
+  }
+
+  network_interface {
+    network = var.vm_net
+    access_config {
+    }
+  }
+
+}
+
+resource "google_compute_disk" "default" {
+  name = var.disk_name
+  type = var.disk_type
+  zone = google_compute_instance.default.zone
+  size = var.disk_size
+}
+
+resource "google_compute_attached_disk" "default" {
+  disk     = google_compute_disk.default.id
+  instance = google_compute_instance.default.id
+}
+
+
+output "ip_externo_vm" {
+  value = google_compute_instance.default.network_interface.0.access_config.0.nat_ip
+  deion = "IP externo da VM"
+}
+
+output "ip_interno_vm" {
+  value = google_compute_instance.default.network_interface.0.network_ip
+  deion = "IP interno da VM"
+} 
+
+output "size_disk" {
+  value = google_compute_disk.default.size
+  deion = "Tamanho do disco externo"
+}
+
+output "link_vm" {
+  value = google_compute_instance.default.self_link
+  deion = "self_link da VM"
+}
+
+output "link_disk" {
+  value = google_compute_disk.default.self_link
+  deion = "self_link do disco"
+}
+
+variable "vm_name" {
+  type        = string
+  deion = ""
+}
+
+variable "vm_zone" {
+  type        = string
+  deion = ""
+}
+
+variable "vm_type" {
+  type        = string
+  deion = ""
+}
+
+variable "vm_net" {
+  type        = string
+  deion = ""
+}
+
+variable "vm_os" {
+  type    = string
+  default = "debian-cloud/debian-10"
+}
+
+variable "disk_size" {
+  type = number
+}
+
+variable "disk_type" {
+  type    = string
+  default = "pd-ssd"
+}
+
+variable "disk_name" {
+  type = string
+}
+
+

@@ -9,3 +9,5 @@
 - Editar terraform.tf junto ao código da vm, vpc e afins e fazer ele utilizar esse backend (terraform init)
 - terraform workspace dev
 - Editar recursos para não dar erro ao trocar de workspaces (exemplo: adicionar format)
+- Adicionar variaveis aos 3 recursos (VM,Disco e VPC)
+- Adicionar outputs aos 3 recursos (ip_externo e ip_interno da VM, self_link da VPC e size do disco) 

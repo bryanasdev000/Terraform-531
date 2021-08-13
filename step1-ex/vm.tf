@@ -1,16 +1,16 @@
 resource "google_compute_instance" "vm" {
-  name         = format("%s-%s",terraform.workspace, "web")
-  machine_type = "e2-small"
-  zone         = "us-central1-a"
+  name         = var.vm_name 
+  machine_type = var.vm_type
+  zone         = var.vm_zone
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-10"
+      image = var.vm_os
     }
   }
 
   network_interface {
-    network = google_compute_network.rede.name
+    network = module.vpc.selflink_vpc
 
     access_config {
       // Ephemeral IP
@@ -18,3 +18,5 @@ resource "google_compute_instance" "vm" {
   }
 
 }
+
+
