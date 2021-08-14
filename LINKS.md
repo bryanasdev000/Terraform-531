@@ -37,3 +37,12 @@ https://driftctl.com/
 https://www.terraform.io/docs/language/resources/provisioners/syntax.html
 https://github.com/GoogleCloudPlatform/terraformer
 
+
+### Links aula 5
+
+https://www.terraform.io/docs/language/modules/syntax.html
+http://dontpad.com/terraform-4linux-7752-projeto/
+https://blog.gruntwork.io/terraform-tips-tricks-loops-if-statements-and-gotchas-f739bbae55f9
+https://www.terraform.io/docs/language/meta-arguments/count.html
+https://www.terraform.io/docs/language/expressions/index.html
+https://github.com/shuaibiyy/awesome-terraform
